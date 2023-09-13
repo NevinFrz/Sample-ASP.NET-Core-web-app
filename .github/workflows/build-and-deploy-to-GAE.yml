@@ -23,7 +23,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Publish
-      run: dotnet publish SampleWebApp.sln --no-restore -c Release -o website
+      run: dotnet publish SampleWebApp.sln --no-restore -c Release
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Upload the Build Artifact
@@ -32,6 +32,6 @@ jobs:
         # Artifact name
         name: SampleWebApp
         # A file, directory or wildcard pattern that describes what to upload
-        path:  website/**
+        path: SampleWebApp/bin/Release/net6.0/**
         # The desired behavior if no files are found using the provided path.
         if-no-files-found: error # optional, default is warn
