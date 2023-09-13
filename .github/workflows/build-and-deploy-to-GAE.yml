@@ -23,7 +23,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Publish
-      run: dotnet publish SampleWebApp/SampleWebApp.csproj --no-restore -c Release -o website
+      run: dotnet publish SampleWebApp.sln --no-restore -c Release -o website
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Upload the Build Artifact
