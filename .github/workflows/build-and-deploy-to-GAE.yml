@@ -32,6 +32,6 @@ jobs:
         # Artifact name
         name: SampleWebApp
         # A file, directory or wildcard pattern that describes what to upload
-        path: ${{ github.workspace }}/SampleWebApp/website/**
+        path:  website/**
         # The desired behavior if no files are found using the provided path.
         if-no-files-found: error # optional, default is warn
