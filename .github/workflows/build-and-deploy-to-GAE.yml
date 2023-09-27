@@ -30,7 +30,7 @@ jobs:
       run: dotnet publish SampleWebApp.sln --no-restore -c Release
 
     - name: Test
-      run: dotnet test --no-build --verbosity normaly
+      run: dotnet test --no-build --verbosity normal
 
     - id: GCPAuth
       name: Authenticate using GCP Workload Identity
@@ -51,7 +51,7 @@ jobs:
         registry: us-central1-docker.pkg.dev
         username: oauth2accesstoken
         password: ${{ steps.GCPAuth.outputs.access_token }}
-        
+
     - name: Docker push
       uses: docker/build-push-action@v2
       with:
