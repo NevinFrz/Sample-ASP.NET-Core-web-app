@@ -55,8 +55,12 @@ jobs:
       run: gcloud info
 
     - name: Docker login
-      
       run: gcloud auth configure-docker ${{ env.GCP_REGION }}-${{ env.GCP_GAR_URL }} -q
+
+    - name: Docker build and push
+      run: |
+        docker build -f SampleWebApp/docker -t ${{ env.GCP_REGION }}-${{ env.GCP_GAR_URL }}/${{ env.GCP_PROJECT_ID }}/docker-repo/samplewebapp:latest .
+        docker push ${{ env.GCP_REGION }}-${{ env.GCP_GAR_URL }}/${{ env.GCP_PROJECT_ID }}/docker-repo/samplewebapp:latest
 
     # - name: Login to GAR
     #   uses: docker/login-action@v3
@@ -65,14 +69,14 @@ jobs:
     #     username: 'oauth2accesstoken'
     #     password: ${{ steps.GCPAuth.outputs.access_token }}
 
-    - name: Docker push
-      uses: docker/build-push-action@v2
-      env:
-        GCP_GAR_REPO_LOCATION: ${{ env.GCP_REGION }}-${{ env.GCP_GAR_URL }}/${{ env.GCP_PROJECT_ID }}/docker-repo
-      with:
-        context: .
-        file: ./SampleWebApp/Dockerfile
-        push: true
-        tags: ${{ env.GCP_GAR_REPO_LOCATION }}/samplewebapp:latest
+    # - name: Docker push
+    #   uses: docker/build-push-action@v2
+    #   env:
+    #     GCP_GAR_REPO_LOCATION: ${{ env.GCP_REGION }}-${{ env.GCP_GAR_URL }}/${{ env.GCP_PROJECT_ID }}/docker-repo
+    #   with:
+    #     context: .
+    #     file: ./SampleWebApp/Dockerfile
+    #     push: true
+    #     tags: ${{ env.GCP_GAR_REPO_LOCATION }}/samplewebapp:latest
     # - name: Deploy to Cloud Run
     #   run: gcloud run deploy samplewebapp --image ${{ env.GCP_GAR_REPO_LOCATION }}/samplewebapp:latest --platform managed --region ${{ env.GCP_REGION }} --allow-unauthenticated
