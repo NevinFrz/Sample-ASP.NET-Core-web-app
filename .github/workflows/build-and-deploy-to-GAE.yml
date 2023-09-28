@@ -9,6 +9,11 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  GCP_REGION: us-central1
+  GCP_PROJECT_ID: hardy-rhythm-368703
+  GCP_GAR_URL: docker.pkg.dev
+
 jobs:
   build:
 
@@ -50,11 +55,7 @@ jobs:
       run: gcloud info
 
     - name: Docker login
-      env:
-        GCP_REGION: us-central1
-        GCP_PROJECT_ID: hardy-rhythm-368703
-        GCP_GAR_URL: docker.pkg.dev
-        GCP_GAR_REPO_LOCATION: ${{ env.GCP_REGION }}-${{ env.GCP_GAR_URL }}/${{ env.GCP_PROJECT_ID }}/docker-repo
+      
       run: gcloud auth configure-docker ${{ env.GCP_REGION }}-${{ env.GCP_GAR_URL }} -q
 
     # - name: Login to GAR
@@ -66,6 +67,8 @@ jobs:
 
     - name: Docker push
       uses: docker/build-push-action@v2
+      env:
+        GCP_GAR_REPO_LOCATION: ${{ env.GCP_REGION }}-${{ env.GCP_GAR_URL }}/${{ env.GCP_PROJECT_ID }}/docker-repo
       with:
         context: .
         file: ./SampleWebApp/Dockerfile
