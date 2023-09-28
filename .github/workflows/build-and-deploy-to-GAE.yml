@@ -55,7 +55,6 @@ jobs:
         GCP_PROJECT_ID: hardy-rhythm-368703
         GCP_GAR_URL: docker.pkg.dev
         GCP_GAR_REPO_LOCATION: ${{ env.GCP_REGION }}-${{ env.GCP_GAR_URL }}/${{ env.GCP_PROJECT_ID }}/docker-repo
-
       run: gcloud auth configure-docker ${{ env.GCP_REGION }}-${{ env.GCP_GAR_URL }} -q
 
     # - name: Login to GAR
