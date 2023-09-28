@@ -72,3 +72,5 @@ jobs:
         file: ./SampleWebApp/Dockerfile
         push: true
         tags: ${{ env.GCP_GAR_REPO_LOCATION }}/samplewebapp:latest
+    # - name: Deploy to Cloud Run
+    #   run: gcloud run deploy samplewebapp --image ${{ env.GCP_GAR_REPO_LOCATION }}/samplewebapp:latest --platform managed --region ${{ env.GCP_REGION }} --allow-unauthenticated
