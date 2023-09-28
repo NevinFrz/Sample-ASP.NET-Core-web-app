@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    
+
     permissions:
       contents: 'read'
       id-token: 'write'
@@ -49,12 +49,21 @@ jobs:
     - name: use gcloud cli
       run: gcloud info
 
-    - name: Login to GAR
-      uses: docker/login-action@v3
-      with: 
-        registry: us-central1-docker.pkg.dev
-        username: oauth2accesstoken
-        password: ${{ steps.GCPAuth.outputs.access_token }}
+    - name: Docker login
+      env:
+        GCP_REGION: us-central1
+        GCP_PROJECT_ID: hardy-rhythm-368703
+        GCP_GAR_URL: docker.pkg.dev
+        GCP_GAR_REPO_LOCATION: ${{ env.GCP_REGION }}-${{ env.GCP_GAR_REPO_URL }}/${{ env.GCP_PROJECT_ID }}/docker-repo
+
+      run: gcloud auth configure-docker ${{ env.GCP_REGION }}-${{ env.GCP_GAR_REPO_URL }} -q
+
+    # - name: Login to GAR
+    #   uses: docker/login-action@v3
+    #   with: 
+    #     registry: us-central1-docker.pkg.dev
+    #     username: 'oauth2accesstoken'
+    #     password: ${{ steps.GCPAuth.outputs.access_token }}
 
     - name: Docker push
       uses: docker/build-push-action@v2
@@ -62,4 +71,4 @@ jobs:
         context: .
         file: ./SampleWebApp/Dockerfile
         push: true
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/samplewebapp:latest
+        tags: ${{ env.GCP_GAR_REPO_LOCATION }}/samplewebapp:latest
