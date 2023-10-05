@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy the build output from the host machine to the container
 COPY SampleWebApp/bin/Release/net6.0/publish/ .
 
-# Expose port 80 for the application
-EXPOSE 80
+# Expose port 4300 for the application
+EXPOSE 4300
 
 # Set the entry point for the container to the application executable
 ENTRYPOINT ["dotnet", "SampleWebApp.dll"]
