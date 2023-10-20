@@ -9,7 +9,7 @@ WORKDIR /src
 COPY . .
 RUN ls -l
 
-WORKDIR SampleWebApp/SampleWebApp.csproj
+WORKDIR SampleWebApp/
 
 RUN ls -l
 
