@@ -1,14 +1,29 @@
 # Use the official .NET SDK image as the base image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
-
-# Set the working directory to /app
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
+EXPOSE 80
 
-# Copy the build output from the host machine to the container
-COPY SampleWebApp/bin/Release/net6.0/publish/ .
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
 
-# Expose port 4300 for the application
-EXPOSE 4300
+COPY . .
+RUN ls -l
+
+WORKDIR SampleWebApp/SampleWebApp.csproj
+
+RUN ls -l
+
+RUN dotnet restore
+RUN dotnet build --no-restore -c Release -o /app
+
+FROM build AS publish
+RUN dotnet publish --no-restore -c Release -o /app
+
+FROM base AS final
+ENV ASPNETCORE_URLS=http://*:${PORT}
+
+WORKDIR /app
+COPY --from=publish /app .
 
 # Set the entry point for the container to the application executable
 ENTRYPOINT ["dotnet", "SampleWebApp.dll"]
